@@ -351,13 +351,13 @@ const renderComments = () => {
       const answerElement = comment.querySelector('.comment-content');
       const userNameElement = comment.querySelector('.comment-name');
       
-      if (answerElement && userNameElement) {
+		if (answerElement && userNameElement) {
         const answer = answerElement.textContent;
         const userName = userNameElement.textContent;
-        const quotedText = `> ${answer}: /n/n @${userName},`;
+        const quotedText = `> ${answer}:\n\n @${userName},`;
         
         if (commentInputElement.value.includes('>')) {
-          commentInputElement.value += `/n/n ${quotedText}`;
+          commentInputElement.value += `\n\n${quotedText}`;
         } else {
           commentInputElement.value = quotedText;
         }
