@@ -112,7 +112,7 @@ function addTodo() {
     body: JSON.stringify({
       name: nameInputElement.value.replaceAll("<", "&lt").replaceAll(">", "&gt").replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll(" ", "&nbsp;"),
       text: commentInputElement.value.replaceAll("<", "&lt").replaceAll(">", "&gt").replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll(" ", "&nbsp;"),
-        }),
+	}),
       })
 		.then((response) => {
 			console.log("Time: " + (Date.now() - startAt));
@@ -192,43 +192,44 @@ commentInputElement.addEventListener('input', function() {
 });
 fetchAndRenderComments();
   
-
 const likes = () => {
-	function delay2(interval = 300) {
-	return new Promise((resolve) => {
-		setTimeout(() => {
-			resolve();
-		}, interval);
-	});
-}
+  function delay2(interval = 300) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, interval);
+    });
+  }
+
   const likeButtons = document.querySelectorAll(".like-button");
+
   for (const likeButton of likeButtons) {
     likeButton.addEventListener("click", (event) => {
       event.stopPropagation();
       const index = likeButton.dataset.index;
       const comment = comments[index];
-      
-      delay2(2000).then(() => {
-          comment.like = comment.userLike ? comment.like - 1 : comment.like + 1;
-          comment.userLike = !comment.userLike;
-			 comment.isLikeLoading = false;
+
+      likeButton.classList.add("animating"); 
+
+      delay2(2000) 
+        .then(() => {
+          likeButton.classList.remove("animating");
+
+          if (!comment.userLike) {
+            comment.filling = "-active-like";
+            comment.like += 1;
+            comment.userLike = true;
+          } else {
+            comment.filling = "";
+            comment.like -= 1;
+            comment.userLike = false;
+          }
           renderComments();
         });
-		  if (!comment.userLike) {
-        comment.filling = "-active-like";
-        comment.like += 1;
-        comment.userLike = true;
-		  
-      } else {
-        comment.filling = "";
-        comment.like -= 1;
-        comment.userLike = false;
-      }
-
-      renderComments();
     });
   }
 };
+
 
 
 const handleEdit = (index) => {
@@ -343,32 +344,23 @@ const renderComments = () => {
       });
 
 
-		function addCommentListener() {
-  const comments = document.querySelectorAll('.comment');
+		const commentElements = document.querySelectorAll(".comment");
+commentElements.forEach((comment) => {
+  comment.addEventListener('click', (event) => {
+	
+    // Получаем имя автора и текст комментария
+    const author = comment.querySelector('.comment-header .comment-name').textContent;
+    const text = comment.querySelector('.comment-text .comment-content').textContent;
+	 	 
+    // Формируем ответную цитату для вставки в поле комментария
+    const quotedText = `> ${text}\n\n @${author}, `; 
+    document.getElementById('comment-input').value = quotedText;
+	 renderComments();
+  }); 
 
-  comments.forEach((comment) => {
-    comment.addEventListener('click', () => {
-      const answerElement = comment.querySelector('.comment-content');
-      const userNameElement = comment.querySelector('.comment-name');
-      
-		if (answerElement && userNameElement) {
-        const answer = answerElement.textContent;
-        const userName = userNameElement.textContent;
-        const quotedText = `> ${answer}:\n\n @${userName},`;
-        
-        if (commentInputElement.value.includes('>')) {
-          commentInputElement.value += `\n\n${quotedText}`;
-        } else {
-          commentInputElement.value = quotedText;
-        }
-        
-        commentInputElement.focus();
-      }
-    });
-  });
-}
+  
+});
 
-addCommentListener();
   
     const saveButtons = document.querySelectorAll(".save-button");
       saveButtons.forEach((button, index) => {
