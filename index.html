@@ -9,6 +9,7 @@
   <body>
     <div class="container">
 		<div id="add-sign"></div>
+		
       <ul class="comments" id="list">
         <!-- Список рендерится из Js -->
       </ul>
@@ -89,7 +90,7 @@ fetch("https://wedev-api.sky.pro/api/v1/elena-uvarova/comments", {
 const appComments = responseData.comments.map((comment) => {
 return {
 	name: comment.author.name,
-	date: new Date(comment.date).toLocaleTimeString('sm', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }),
+	date: new Date(comment.date).toLocaleTimeString('sm', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }).replace(", ", " "),
 	comment: comment.text,
 	like: comment.likes,
 	userLike: false,
@@ -104,7 +105,7 @@ return {
 
 
 
-function addTodo() {
+function addTodo(text) {
 	const startAt = Date.now();
 	console.log("Start doing require");
 	fetch("https://wedev-api.sky.pro/api/v1/elena-uvarova/comments", {
@@ -112,33 +113,66 @@ function addTodo() {
     body: JSON.stringify({
       name: nameInputElement.value.replaceAll("<", "&lt").replaceAll(">", "&gt").replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll(" ", "&nbsp;"),
       text: commentInputElement.value.replaceAll("<", "&lt").replaceAll(">", "&gt").replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll(" ", "&nbsp;"),
+		forceError: true,
 	}),
       })
 		.then((response) => {
-			console.log("Time: " + (Date.now() - startAt));
-			return response;
+			if (response.status === 500) {
+				throw new Error("Ошибка сервера. Повторите позже");
+			}
+			if (response.status === 400) {
+				throw new Error("Имя и комментарий должны быть не короче 3-х символов");
+			} 
+			if (response.status === undefined) {
+				throw new Error("Сломался интернет.");
+			} 
+			if (response.status === 201) {
+				return response.json();
+			}
 		})
+
 		.then((response) => {
-		return response.json();
+		return fetchAndRenderComments();
 	})
-	.then((response) => {
-			console.log("Time: " + (Date.now() - startAt));
-			return response;
-		})
-		.then(() => {
-			fetchAndRenderComments();
+		.then(() => {		
 			buttonElement.disabled = false;
 			buttonElement.textContent = "Написать";
-		});
 			nameInputElement.value = "";
 			commentInputElement.value = "";
 			nameInputElement.disabled = false;
 			commentInputElement.disabled = false;
 			buttonElement.disabled = false;
 			nameInputElement.focus();
+		}).catch((error) => {
+			buttonElement.disabled = false;
+			buttonElement.textContent = "Написать";
+			
+			nameInputElement.disabled = false;
+			commentInputElement.disabled = false;
+			buttonElement.disabled = false;
+			nameInputElement.focus();
+			// alert("Что-то пошло не так, попробуй позже");
+			console.warn(error);
+			if (nameInputElement.value.length < 3 || commentInputElement.value.length < 3){
+				alert("Имя и комментарий должны быть не короче 3-х символов");
+			}
+			if (error.message === "Сломался интернет."){
+				alert("Проблема с интернетом");
+			}  else { 
+				alert("Ошибка сервера.");
+				return response.json();
+				addTodo(text);
+			 } 
+			 postMessage();
+				
+				nameInputElement.value = "";
+				commentInputElement.value = "";
+
+				
+renderComments();
+		})
+		
 	}
-
-
 	nameInputElement.addEventListener('input', function() {
   nameInputElement.classList.remove("error");
 });
@@ -147,8 +181,7 @@ commentInputElement.addEventListener('input', function() {
   commentInputElement.classList.remove("error");
 });
 
-
-  buttonElement.addEventListener("click", () => {
+buttonElement.addEventListener("click", () => {
   nameInputElement.classList.remove("error");
   commentInputElement.classList.remove("error");
   
@@ -191,7 +224,8 @@ commentInputElement.addEventListener('input', function() {
 	
 });
 fetchAndRenderComments();
-  
+
+
 const likes = () => {
   function delay2(interval = 300) {
     return new Promise((resolve) => {
@@ -229,8 +263,6 @@ const likes = () => {
     });
   }
 };
-
-
 
 const handleEdit = (index) => {
 	const handleEditElements = document.querySelectorAll(".editing");
@@ -288,6 +320,7 @@ const renderComments = () => {
   .map((comment, index) => {
       if (comment.isEdit) {  
   return`
+ 
     <li class="comment" data-index="${index}" >
   <div class="comment-header">
     <div>${comment.name}</div>
@@ -297,13 +330,14 @@ const renderComments = () => {
   <div class="comment-body">
                 <div class="comment-text" >
                   <textarea data-index="${index}" class="comment-input add-text" rows="4">${comment.comment}</textarea>
-						<button type="submit" data-index='${index}' class="save-buttons add-form-button2 saving post-button">Сохранить</button> 
+						<button type="submit" data-index='${index}' class="save-buttons add-form-button saving post-button">Сохранить</button> 
                 </div>
               </div>
             </li>
           `;
   } else {
             return `
+			
           <li class="comment">
             <div class="comment-header">
               <div class="comment-name">${comment.name}</div>
@@ -312,7 +346,7 @@ const renderComments = () => {
             <div class="comment-body">
               <div class="comment-text" data-index="${index}">
                 <span data-index='${index}' class="comment-content">${comment.comment}</span>
-					 <button class="edit-button add-form-button2">Редактировать</button> <!-- новая кнопка -->
+					 <button class="edit-button add-form-button">Редактировать</button> <!-- новая кнопка -->
               </div>        
             </div>
         
@@ -323,6 +357,7 @@ const renderComments = () => {
               </div>  
             </div>
           </li>
+			
           `;
       }
         })
@@ -361,6 +396,7 @@ commentElements.forEach((comment) => {
   
 });
 
+// addCommentListener();
   
     const saveButtons = document.querySelectorAll(".save-button");
       saveButtons.forEach((button, index) => {
