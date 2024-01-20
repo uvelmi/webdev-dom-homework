@@ -61,7 +61,7 @@ list.style.display = "none";
 return delayForSecond()
 .then(() => {
 	addSign.style.display = "none";
-	list.style.display = "block";
+	list.style.display = "flex";
 	});
 });
 
@@ -85,7 +85,12 @@ const fetchAndRenderComments = () => {
 fetch("https://wedev-api.sky.pro/api/v1/elena-uvarova/comments", {
 	method: 'GET',
 })
-.then(response => response.json())
+.then(response => {
+    if (!response.ok) {
+      throw new Error("Проблема с интернетом. Пожалуйста, проверьте подключение к сети");
+    }
+    return response.json();
+  })
 .then(responseData => {
 const appComments = responseData.comments.map((comment) => {
 return {
@@ -94,15 +99,24 @@ return {
 	comment: comment.text,
 	like: comment.likes,
 	userLike: false,
-	isEdit: false
+	isEdit: false,
+	forceError: false,
 	};
 });
 
 	comments = appComments;
 	renderComments();
-	});
-}
+	})
+	.catch(error => {
+  if (error instanceof TypeError && error.message === "NetworkError when attempting to fetch resource") {
+    alert("Похоже, у вас проблемы с интернет-соединением. Пожалуйста, проверьте подключение к сети и попробуйте снова.");
+  } else {
+    alert("Проблема с интернетом");
+  }
+  renderComments();
+  });
 
+}
 
 
 function addTodo(text) {
@@ -111,21 +125,20 @@ function addTodo(text) {
 	fetch("https://wedev-api.sky.pro/api/v1/elena-uvarova/comments", {
     method: "POST",
     body: JSON.stringify({
-      name: nameInputElement.value.replaceAll("<", "&lt").replaceAll(">", "&gt").replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll(" ", "&nbsp;"),
-      text: commentInputElement.value.replaceAll("<", "&lt").replaceAll(">", "&gt").replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll(" ", "&nbsp;"),
-		forceError: true,
-	}),
-      })
+      name: nameInputElement.value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll(" ", "&nbsp;"),
+      text: commentInputElement.value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll(" ", "&nbsp;"),
+      forceError: true,
+    }),
+  })
 		.then((response) => {
 			if (response.status === 500) {
 				throw new Error("Ошибка сервера. Повторите позже");
 			}
+			
 			if (response.status === 400) {
-				throw new Error("Имя и комментарий должны быть не короче 3-х символов");
-			} 
-			if (response.status === undefined) {
-				throw new Error("Сломался интернет.");
-			} 
+				throw new Error(alert("Имя и комментарий должны быть не короче 3-х символов"));
+			}
+
 			if (response.status === 201) {
 				return response.json();
 			}
@@ -134,7 +147,7 @@ function addTodo(text) {
 		.then((response) => {
 		return fetchAndRenderComments();
 	})
-		.then(() => {		
+		.then(() => {
 			buttonElement.disabled = false;
 			buttonElement.textContent = "Написать";
 			nameInputElement.value = "";
@@ -151,20 +164,18 @@ function addTodo(text) {
 			commentInputElement.disabled = false;
 			buttonElement.disabled = false;
 			nameInputElement.focus();
-			// alert("Что-то пошло не так, попробуй позже");
+
 			console.warn(error);
-			if (nameInputElement.value.length < 3 || commentInputElement.value.length < 3){
-				alert("Имя и комментарий должны быть не короче 3-х символов");
-			}
-			if (error.message === "Сломался интернет."){
-				alert("Проблема с интернетом");
-			}  else { 
+
+			if (error.message === "Ошибка сервера. Повторите позже"){
 				alert("Ошибка сервера.");
-				return response.json();
 				addTodo(text);
-			 } 
-			 postMessage();
+			}
+
+		fetchAndRenderComments();
 				
+			postMessage();
+			
 				nameInputElement.value = "";
 				commentInputElement.value = "";
 
@@ -186,9 +197,6 @@ buttonElement.addEventListener("click", () => {
   commentInputElement.classList.remove("error");
   
 
-  nameInputElement.classList.remove("error");
-  commentInputElement.classList.remove("error");
-
   if (nameInputElement.value.trim() === "") { 
     nameInputElement.classList.add("error");
     return;
@@ -199,15 +207,6 @@ buttonElement.addEventListener("click", () => {
   }
 
  
-  if (nameInputElement.value.trim() === "") {
-    nameInputElement.classList.add("error");
-    return;
-  }
-  if (commentInputElement.value.trim() === "") {
-    commentInputElement.classList.add("error");
-    return;
-  }
-
   if (nameInputElement.value === "") {
     nameInputElement.classList.add("error");
     return;
