@@ -40,111 +40,7 @@ function delay(interval = 2000) {
 export let comments = [];
 
 fetchAndRenderComments();
-// export function fetchAndRenderComments () { 
 
-// fetch("https://wedev-api.sky.pro/api/v1/elena-uvarova/comments", {
-// 	method: 'GET',
-// })
-// .then(response => {
-//     if (!response.ok) {
-//       throw new Error("Проблема с интернетом. Пожалуйста, проверьте подключение к сети");
-//     }
-//     return response.json();
-//   })
-// .then(responseData => {
-// let appComments = responseData.comments.map((comment) => {
-// return {
-// 	name: comment.author.name,
-// 	date: new Date(comment.date).toLocaleTimeString('sm', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }).replace(", ", " "),
-// 	comment: comment.text,
-// 	like: comment.likes,
-// 	userLike: false,
-// 	isEdit: false,
-// 	forceError: false,
-// 	};
-// });
-
-// 	comments = appComments;
-// 	return renderComments(comments);
-// 	})
-// 	.catch(error => {
-//   if (error instanceof TypeError && error.message === "NetworkError when attempting to fetch resource") {
-//     alert("Похоже, у вас проблемы с интернет-соединением. Пожалуйста, проверьте подключение к сети и попробуйте снова.");
-//   } else {
-//     alert("Проблема с интернетом");
-// 	 console.warn(error);
-//   }
-//   renderComments();
-//   });
-
-// }
-
-
-
-
-// function addTodo() {
-// 	fetch("https://wedev-api.sky.pro/api/v1/elena-uvarova/comments", {
-//     method: "POST",
-//     body: JSON.stringify({
-//       name: nameInputElement.value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll(" ", "&nbsp;"),
-//       text: commentInputElement.value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll(" ", "&nbsp;"),
-//       forceError: true,
-//     }),
-//   })
-// 		.then((response) => {
-// 			if (response.status === 500) {
-// 				throw new Error("Ошибка сервера. Повторите позже");
-// 			}
-			
-// 			if (response.status === 400) {
-// 				throw new Error(alert("Имя и комментарий должны быть не короче 3-х символов"));
-// 			}
-
-// 			if (response.status === 201) {
-// 				return response.json();
-// 			}
-// 		})
-
-// 		.then((responseData) => {
-// 		return fetchAndRenderComments();
-// 	})
-// 		.then((data) => {
-// 			buttonElement.disabled = false;
-// 			buttonElement.textContent = "Написать";
-// 			nameInputElement.value = "";
-// 			commentInputElement.value = "";
-// 			nameInputElement.disabled = false;
-// 			commentInputElement.disabled = false;
-// 			buttonElement.disabled = false;
-// 			nameInputElement.focus();
-// 		}).catch((error) => {
-// 			buttonElement.disabled = false;
-// 			buttonElement.textContent = "Написать";
-			
-// 			nameInputElement.disabled = false;
-// 			commentInputElement.disabled = false;
-// 			buttonElement.disabled = false;
-// 			nameInputElement.focus();
-
-// 			console.warn(error);
-
-// 			if (error.message === "Ошибка сервера. Повторите позже"){
-// 				alert("Ошибка сервера.");
-// 				addTodo();
-// 			}
-
-// 		fetchAndRenderComments();
-				
-// 			postMessage();
-			
-// 				nameInputElement.value = "";
-// 				commentInputElement.value = "";
-
-				
-// renderComments();
-// 		})
-		
-// 	}
 	nameInputElement.addEventListener('input', function() {
   nameInputElement.classList.remove("error");
 });
@@ -172,12 +68,9 @@ buttonElement.addEventListener("click", () => {
 	buttonElement.disabled = true;
 	buttonElement.textContent = "Комментарий добавляется...";
 	addTodo();
-	renderComments(comments);
+	
+
 });
-// fetchAndRenderComments();
-
-
-
 
 export function likes (comments) {
   function delay2(interval = 300) {
@@ -217,7 +110,6 @@ export function likes (comments) {
   }
 };
 likes(comments);
-// renderComments(comments);
 
 export function handleEdit (comments) {
 	const handleEditElements = document.querySelectorAll(".editing");
@@ -270,65 +162,6 @@ export function handleSave (comments) {
 	}
 };
 
-// const renderComments = () => {
-//   const commentsHtml = comments
-//   .map((comment, index) => {
-//       if (comment.isEdit) {  
-//   return`
- 
-//     <li class="comment" data-index="${index}" >
-//   <div class="comment-header">
-//     <div>${comment.name}</div>
-//     <div>${comment.date}</div>
-    
-//   </div>
-//   <div class="comment-body">
-//                 <div class="comment-text" >
-//                   <textarea data-index="${index}" class="comment-input add-text" rows="4">${comment.comment}</textarea>
-// 						<button type="submit" data-index='${index}' class="save-buttons add-form-button saving post-button">Сохранить</button> 
-//                 </div>
-//               </div>
-//             </li>
-//           `;
-//   } else {
-//             return `
-			
-//           <li class="comment">
-//             <div class="comment-header">
-//               <div class="comment-name">${comment.name}</div>
-//               <div>${comment.date}</div>     
-//           </div>
-//             <div class="comment-body">
-//               <div class="comment-text" data-index="${index}">
-//                 <span data-index='${index}' class="comment-content">${comment.comment}</span>
-// 					 <button class="edit-button add-form-button">Редактировать</button> <!-- новая кнопка -->
-//               </div>        
-//             </div>
-        
-//             <div class="comment-footer">
-//               <div class="likes">
-//                 <span class="likes-counter">${comment.like}</span>
-//                 <button data-index='${index}' class="like-button ${comment.userLike ? "-active-like" : ""}"></button>
-//               </div>  
-//             </div>
-//           </li>
-			
-//           `;
-//       }
-//         })
-//         .join("");
-//       listElement.innerHTML = commentsHtml;
-
-//       likes();
-// 		handleEdit();
-// 		handleSave();
-// 		editButtonsComment();
-// 		commentElementsQuoted();
-		
-    
-// };
-// renderComments(comments);
-
 export function editButtonsComment(comments) { 
 const editButtons = document.querySelectorAll(".edit-button");
       editButtons.forEach((button, index) => {
@@ -341,22 +174,18 @@ const editButtons = document.querySelectorAll(".edit-button");
 }
 
 export function commentElementsQuoted(comments) { 
-		const commentElements = document.querySelectorAll(".comment");
-commentElements.forEach((comment) => {
-  comment.addEventListener('click', () => {
-	
-    // Получаем имя автора и текст комментария
-    const author = comment.querySelector('.comment-header .comment-name').textContent;
-    const text = comment.querySelector('.comment-text .comment-content').textContent;
-	 	 
-    // Формируем ответную цитату для вставки в поле комментария
-    const quotedText = `> ${text}\n\n @${author}, `; 
-    document.getElementById('comment-input').value = quotedText;
-	 renderComments(comments);
-		}); 
-	});
+
+	let commentElements = document.querySelectorAll(".comment");
+	for (const commentsElement of commentElements) {
+		commentsElement.addEventListener("click", () => {
+			const indexQuoted = commentsElement.dataset.index;
+			
+			commentInputElement.value = `> ${comments[indexQuoted].comment.replaceAll("&nbsp;", " ")}\n\n @ ${comments[indexQuoted].name.replaceAll("&nbsp;", " ")}, `;
+		
+		})
+	}
 }
-// addCommentListener();
+renderComments(comments);
   
 export const saveButtons = document.querySelectorAll(".save-button");
       saveButtons.forEach((button, index) => {
@@ -368,7 +197,6 @@ export const saveButtons = document.querySelectorAll(".save-button");
 			 renderComments(comments);
         });
       });
-// renderComments(comments);
 
 
 export function dateData(){ 
@@ -402,5 +230,3 @@ renderComments(comments);
         buttonElement.click();
       }
     });
-
-

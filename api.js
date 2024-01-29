@@ -36,13 +36,11 @@ export function fetchAndRenderComments () {
 		 alert("Проблема с интернетом");
 		 console.warn(error);
 	  }
-	//   renderComments();
-	  });
-	
-	}
+	});
+}
 	
 	
-export function addTodo() {
+export function addTodo(text) {
 	 fetch("https://wedev-api.sky.pro/api/v1/elena-uvarova/comments", {
 		 method: "POST",
 		 body: JSON.stringify({
@@ -65,10 +63,10 @@ export function addTodo() {
 				}
 			})
 	
-			.then((responseData) => {
+			.then((response) => {
 			return fetchAndRenderComments();
 		})
-			.then((data) => {
+			.then(() => {
 				buttonElement.disabled = false;
 				buttonElement.textContent = "Написать";
 				nameInputElement.value = "";
@@ -90,50 +88,8 @@ export function addTodo() {
 	
 				if (error.message === "Ошибка сервера. Повторите позже"){
 					alert("Ошибка сервера.");
-					addTodo();
+					addTodo(text);
 				}
-	
-			fetchAndRenderComments();
-					
-				// postMessage();
-				
-					nameInputElement.value = "";
-					commentInputElement.value = "";
-	
-					
-	// renderComments();
-			})
-			
-		}
-
-		// nameInputElement.addEventListener('input', function() {
-		// 	nameInputElement.classList.remove("error");
-		//  });
-		 
-		//  commentInputElement.addEventListener('input', function() {
-		// 	commentInputElement.classList.remove("error");
-		//  });
-		 
-		//  buttonElement.addEventListener("click", () => {
-		// 	nameInputElement.classList.remove("error");
-		// 	commentInputElement.classList.remove("error");
-			
-		 
-		// 	if (nameInputElement.value.trim() === "") { 
-		// 	  nameInputElement.classList.add("error");
-		// 	  return;
-		// 	}
-		// 	if (commentInputElement.value.trim() === "") {
-		// 	  commentInputElement.classList.add("error");
-		// 	  return;
-		// 	}
-		 
-		  
-		 
-		// 	 buttonElement.disabled = true;
-		// 	 buttonElement.textContent = "Комментарий добавляется...";
-		// 	 addTodo()
-			 
-		//  });
-		 
-		//  fetchAndRenderComments();
+				postMessage(error);
+	})
+}

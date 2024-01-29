@@ -24,9 +24,9 @@ const renderComments = (comments) => {
 	} else {
 				 return `
 			 
-			  <li class="comment">
+			  <li class="comment" data-index="${index}">
 				 <div class="comment-header">
-					<div class="comment-name">${comment.name}</div>
+					<div class="comment-name" >${comment.name}</div>
 					<div>${comment.date}</div>     
 			  </div>
 				 <div class="comment-body">
