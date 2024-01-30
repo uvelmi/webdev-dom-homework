@@ -174,30 +174,29 @@ const editButtons = document.querySelectorAll(".edit-button");
 }
 
 export function commentElementsQuoted(comments) { 
-
 	let commentElements = document.querySelectorAll(".comment");
 	for (const commentsElement of commentElements) {
-		commentsElement.addEventListener("click", () => {
-			const indexQuoted = commentsElement.dataset.index;
-			
-			commentInputElement.value = `> ${comments[indexQuoted].comment.replaceAll("&nbsp;", " ")}\n\n @ ${comments[indexQuoted].name.replaceAll("&nbsp;", " ")}, `;
-		
-		})
+	  commentsElement.addEventListener("click", () => {    
+		 const indexQuoted = commentsElement.dataset.index;    
+		 if (!comments[indexQuoted].isEdit) {
+			commentInputElement.value = `> ${comments[indexQuoted].comment.replaceAll("&nbsp;", " ")}\n\n @ ${comments[indexQuoted].name.replaceAll("&nbsp;", " ")},`;
+		 } 
+	  })
 	}
-}
-renderComments(comments);
-  
-export const saveButtons = document.querySelectorAll(".save-button");
+ }
+
+export function saveButtons(comments) {
+ const saveButtons = document.querySelectorAll(".save-button");
       saveButtons.forEach((button, index) => {
         button.addEventListener("click", (event) => {
       event.stopPropagation();
-          const editedComment = button.parentNode.nextElementSibling.children[0].children[0].value;
+		const editedComment = button.parentNode.nextElementSibling.querySelector('.comment-input').value;
           comments[index].comment = editedComment;
           comments[index].isEdit = false;
 			 renderComments(comments);
         });
       });
-
+}
 
 export function dateData(){ 
 let currentDate = new Date(formattedDate);

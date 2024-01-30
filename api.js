@@ -1,4 +1,3 @@
-
 import {comments, buttonElement, nameInputElement, commentInputElement} from "./main.js"
 import { renderComments } from "./render.js";
 
@@ -7,13 +6,9 @@ export function fetchAndRenderComments () {
 	fetch("https://wedev-api.sky.pro/api/v1/elena-uvarova/comments", {
 		method: 'GET',
 	})
-	.then(response => {
-		 if (!response.ok) {
-			throw new Error("Проблема с интернетом. Пожалуйста, проверьте подключение к сети");
-		 }
-		 return response.json();
-	  })
-	.then(responseData => {
+	.then((response) => {
+		 const jsonPromise = response.json();
+		 jsonPromise.then((responseData) => {
 	let appComments = responseData.comments.map((comment) => {
 	return {
 		name: comment.author.name,
@@ -22,23 +17,19 @@ export function fetchAndRenderComments () {
 		like: comment.likes,
 		userLike: false,
 		isEdit: false,
-		forceError: false,
-		};
+		// forceError: false,
+		}
 	});
 	
 		let comments = appComments;
 		return renderComments(comments);
 		})
-		.catch(error => {
-	  if (error instanceof TypeError && error.message === "NetworkError when attempting to fetch resource") {
+	})	
+		.catch((error) => {
 		 alert("Похоже, у вас проблемы с интернет-соединением. Пожалуйста, проверьте подключение к сети и попробуйте снова.");
-	  } else {
-		 alert("Проблема с интернетом");
 		 console.warn(error);
-	  }
 	});
-}
-	
+}	
 	
 export function addTodo(text) {
 	 fetch("https://wedev-api.sky.pro/api/v1/elena-uvarova/comments", {
@@ -89,6 +80,8 @@ export function addTodo(text) {
 				if (error.message === "Ошибка сервера. Повторите позже"){
 					alert("Ошибка сервера.");
 					addTodo(text);
+				} else {
+					alert('Пожалуйста, проверьте подключение к сети и попробуйте снова.');
 				}
 				postMessage(error);
 	})

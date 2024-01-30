@@ -1,4 +1,4 @@
-import { comments, listElement, likes, handleEdit, handleSave, editButtonsComment, commentElementsQuoted } from "./main.js";
+import { comments, saveButtons, listElement, likes, handleEdit, handleSave, editButtonsComment, commentElementsQuoted } from "./main.js";
 
 
 const renderComments = (comments) => {
@@ -55,6 +55,7 @@ const renderComments = (comments) => {
 		 handleSave(comments);
 		 editButtonsComment(comments);
 		 commentElementsQuoted(comments);
+		 saveButtons(comments);
 };
 
 export { renderComments };
