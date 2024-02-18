@@ -1,39 +1,41 @@
-import { fetchAndRenderComments, addTodo } from "./api.js";
-import { renderComments } from "./render.js";
+import { fetchAndRenderComments } from "./api.js";
+import { renderApp } from "./render.js";
 
-export const buttonElement = document.getElementById("add-button");
+
 export const listElement = document.getElementById("list");
 export const commentElement = document.querySelector(".comments");
 export const nameInputElement = document.getElementById("name-input");
 export const commentInputElement = document.getElementById("comment-input");
-const deleteButtonElement = document.getElementById("delete-button");
+
+
 export const addSignElement = document.getElementById("add-sign"); 
 
 
 window.addEventListener('load', function() {
-const addSign = document.getElementById('add-sign');
-const list = document.getElementById('list');
-addSign.innerHTML = "Пожалуйста, подождите, загружаются комментарии...";
+	const addSign = document.getElementById('add-sign');
+	const list = document.getElementById('list');
+	if (addSign && list) {
+		 addSign.innerHTML = "Пожалуйста, подождите, загружаются комментарии...";
+		 list.value = "";
+		 list.style.display = "none";
 
-list.value = "";
-list.style.display = "none";
-return delayForSecond()
-.then(() => {
-	addSign.style.display = "none";
-	list.style.display = "flex";
-	});
+		 return delayForSecond()
+			  .then(() => {
+					addSign.style.display = "none";
+					list.style.display = "flex";
+			  });
+	}
 });
 
-function delayForSecond(){
-	delay(3000);
-	return delay();
-
+function delayForSecond() {
+	return delay(3000);
 }
+
 function delay(interval = 2000) {
 	return new Promise((resolve) => {
-	setTimeout(() => {
-		resolve();
-	}, interval);
+		 setTimeout(() => {
+			  resolve();
+		 }, interval);
 	});
 }
 
@@ -41,36 +43,6 @@ export let comments = [];
 
 fetchAndRenderComments();
 
-	nameInputElement.addEventListener('input', function() {
-  nameInputElement.classList.remove("error");
-});
-
-commentInputElement.addEventListener('input', function() {
-  commentInputElement.classList.remove("error");
-});
-
-buttonElement.addEventListener("click", () => {
-  nameInputElement.classList.remove("error");
-  commentInputElement.classList.remove("error");
-  
-
-  if (nameInputElement.value.trim() === "") { 
-    nameInputElement.classList.add("error");
-    return;
-  }
-  if (commentInputElement.value.trim() === "") {
-    commentInputElement.classList.add("error");
-    return;
-  }
-
- 
-
-	buttonElement.disabled = true;
-	buttonElement.textContent = "Комментарий добавляется...";
-	addTodo();
-	
-
-});
 
 export function likes (comments) {
   function delay2(interval = 300) {
@@ -104,7 +76,7 @@ export function likes (comments) {
             comment.like -= 1;
             comment.userLike = false;
           }
-          renderComments(comments);
+          renderApp(comments);
         });
     });
   }
@@ -117,16 +89,17 @@ export function handleEdit (comments) {
 		handleEditElement.addEventListener("click" , (event) => {
 		event.stopPropagation();
   comments[index].isEdit = true;
-  renderComments(comments);
+  renderApp(comments);
   // Показываем кнопку "Сохранить"
   listElement.querySelectorAll('.comment')[index].querySelector('.save-button').style.display = "block";
-  renderComments(comments);
+  renderApp(comments);
 	});
   }
 };
 
 
 function isCommentEmpty(comment) {
+	 const commentInputElement = document.getElementById("comment-input");
   const isEmpty = comment.trim() === "";
   if (isEmpty) {
     // Если комментарий пуст, добавляем класс "error" к соответствующему элементу формы
@@ -145,6 +118,7 @@ export function handleSave (comments) {
 			event.stopPropagation();
 			const index = handleSaveElement.dataset.index;
       const comment = comments[index];
+		const listElement = document.getElementById("list");
 	const editedComment = listElement.querySelectorAll('.comment')[handleSaveElement.dataset.index].querySelector('.comment-input').value;
 	if (isCommentEmpty(editedComment)) {
 		        // Обработка ошибки или уведомление пользователю о невозможности отправить пустой комментарий
@@ -157,7 +131,7 @@ export function handleSave (comments) {
   
   // Скрываем кнопку "Сохранить" после сохранения
   listElement.querySelectorAll('.comment')[index].querySelector('.save-buttons').style.display = "none";
-	renderComments(comments); // Перерисовываем комментарии
+  renderApp(comments); // Перерисовываем комментарии
 		});
 	}
 };
@@ -168,7 +142,7 @@ const editButtons = document.querySelectorAll(".edit-button");
         button.addEventListener("click", (event) => {
       event.stopPropagation();
           comments[index].isEdit = true;
-          renderComments(comments);
+          renderApp(comments);
         });
       });
 }
@@ -177,10 +151,12 @@ export function commentElementsQuoted(comments) {
 	let commentElements = document.querySelectorAll(".comment");
 	for (const commentsElement of commentElements) {
 	  commentsElement.addEventListener("click", () => {    
-		 const indexQuoted = commentsElement.dataset.index;    
+		 const indexQuoted = commentsElement.dataset.index;
+		 const commentInputElement = document.getElementById("comment-input");
 		 if (!comments[indexQuoted].isEdit) {
 			commentInputElement.value = `> ${comments[indexQuoted].comment.replaceAll("&nbsp;", " ")}\n\n @ ${comments[indexQuoted].name.replaceAll("&nbsp;", " ")},`;
-		 } 
+	
+		} 
 	  })
 	}
  }
@@ -193,7 +169,7 @@ export function saveButtons(comments) {
 		const editedComment = button.parentNode.nextElementSibling.querySelector('.comment-input').value;
           comments[index].comment = editedComment;
           comments[index].isEdit = false;
-			 renderComments(comments);
+			 renderApp(comments);
         });
       });
 }
@@ -209,23 +185,11 @@ let currentDate = new Date(formattedDate);
 	let formattedDate = `${day}.${month}.${year} ${hours}:${minutes}`;
 }  
 
-export function deleteButtonElementComment() { 
-  deleteButtonElement.addEventListener("click", () => {
-const comments = Array.from(listElement.querySelectorAll(".comment"));
 
-if (comments.length > 0) {
-listElement.removeChild(comments[comments.length - 1]);
-comments.pop(); // Удаляем последний комментарий из массива
-		}
-	});
-}
-deleteButtonElementComment()
-nameInputElement.value = "";
-commentInputElement.value = "";
-nameInputElement.value.trim() === "" || commentInputElement.value.trim() === "";
-renderComments(comments);
     document.addEventListener("keyup", (event) => {
       if (event.key === "Enter") {
         buttonElement.click();
       }
     });
+
+
