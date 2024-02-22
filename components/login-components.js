@@ -1,12 +1,12 @@
-import { token, setUser } from "../render.js";
+import { setUser } from "../render.js";
 import { loginUser, registerUser } from "../api.js";
 
 
-export function renderLoginComponent({ appEl, setToken, fetchAndRenderComments }) {
+export function renderLoginComponent({ setToken, fetchAndRenderComments }) {
 
 let isLoginMode = true;
 
-function renderForm ( comments) {
+function renderForm () {
 	
 	const appHtml = `<div class="container" id="register">
 
@@ -73,8 +73,6 @@ document.getElementById('login-button').addEventListener('click', () => {
 			const login = document.getElementById('login-input').value;
 			const password = document.getElementById('password-input').value;
 
-			
-			// setToken("Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k");
 			if(!name) {
 				alert('Введите имя');
 				return;

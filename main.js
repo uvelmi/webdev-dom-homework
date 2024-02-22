@@ -10,7 +10,6 @@ export const commentInputElement = document.getElementById("comment-input");
 
 export const addSignElement = document.getElementById("add-sign"); 
 
-
 window.addEventListener('load', function() {
 	const addSign = document.getElementById('add-sign');
 	const list = document.getElementById('list');
@@ -60,13 +59,11 @@ export function likes (comments) {
       event.stopPropagation();
       const index = likeButton.dataset.index;
       const comment = comments[index];
-
       likeButton.classList.add("animating"); 
 
       delay2(2000) 
         .then(() => {
           likeButton.classList.remove("animating");
-
           if (!comment.userLike) {
             comment.filling = "-active-like";
             comment.like += 1;
@@ -90,7 +87,6 @@ export function handleEdit (comments) {
 		event.stopPropagation();
   comments[index].isEdit = true;
   renderApp(comments);
-  // Показываем кнопку "Сохранить"
   listElement.querySelectorAll('.comment')[index].querySelector('.save-button').style.display = "block";
   renderApp(comments);
 	});
@@ -102,10 +98,8 @@ function isCommentEmpty(comment) {
 	 const commentInputElement = document.getElementById("comment-input");
   const isEmpty = comment.trim() === "";
   if (isEmpty) {
-    // Если комментарий пуст, добавляем класс "error" к соответствующему элементу формы
     commentInputElement.classList.add("error");
   } else {
-    // Если комментарий не пуст, удаляем класс "error"
     commentInputElement.classList.remove("error");
   }
   return isEmpty;
@@ -121,17 +115,12 @@ export function handleSave (comments) {
 		const listElement = document.getElementById("list");
 	const editedComment = listElement.querySelectorAll('.comment')[handleSaveElement.dataset.index].querySelector('.comment-input').value;
 	if (isCommentEmpty(editedComment)) {
-		        // Обработка ошибки или уведомление пользователю о невозможности отправить пустой комментарий
         return;
       }
-	
-	
-	comments[index].comment = editedComment; // Обновляем комментарий в массиве
-  comments[index].isEdit = false; // Устанавливаем флаг редактирования в false
-  
-  // Скрываем кнопку "Сохранить" после сохранения
+comments[index].comment = editedComment; 
+comments[index].isEdit = false; 
   listElement.querySelectorAll('.comment')[index].querySelector('.save-buttons').style.display = "none";
-  renderApp(comments); // Перерисовываем комментарии
+  renderApp(comments); 
 		});
 	}
 };
@@ -147,19 +136,24 @@ const editButtons = document.querySelectorAll(".edit-button");
       });
 }
 
-export function commentElementsQuoted(comments) { 
-	let commentElements = document.querySelectorAll(".comment");
-	for (const commentsElement of commentElements) {
-	  commentsElement.addEventListener("click", () => {    
-		 const indexQuoted = commentsElement.dataset.index;
-		 const commentInputElement = document.getElementById("comment-input");
-		 if (!comments[indexQuoted].isEdit) {
-			commentInputElement.value = `> ${comments[indexQuoted].comment.replaceAll("&nbsp;", " ")}\n\n @ ${comments[indexQuoted].name.replaceAll("&nbsp;", " ")},`;
-	
-		} 
-	  })
-	}
- }
+export function commentElementsQuoted(comments, token) {
+  let commentElements = document.querySelectorAll(".comment");
+  
+  for (const commentsElement of commentElements) {
+    commentsElement.addEventListener("click", () => {
+      const indexQuoted = commentsElement.dataset.index;
+      const commentInputElement = document.getElementById("comment-input");
+			if (!token) {
+      if (commentInputElement) { 
+        if (!comments[indexQuoted].isEdit) {
+          commentInputElement.value = `${comments[indexQuoted].comment.replaceAll("&nbsp;", " ")}\n\n @ ${comments[indexQuoted].name.replaceAll("&nbsp;", " ")},`;
+					}
+				}
+      }
+				return;
+    });
+  }
+}
 
 export function saveButtons(comments) {
  const saveButtons = document.querySelectorAll(".save-button");
@@ -183,10 +177,8 @@ let currentDate = new Date(formattedDate);
   let hours = currentDate.getHours() < 10 ? '0' + currentDate.getHours() : currentDate.getHours();
   let minutes = currentDate.getMinutes() < 10 ? '0' + currentDate.getMinutes() : currentDate.getMinutes();
 	let formattedDate = `${day}.${month}.${year} ${hours}:${minutes}`;
-}  
-
-
-    document.addEventListener("keyup", (event) => {
+}
+  document.addEventListener("keyup", (event) => {
       if (event.key === "Enter") {
         buttonElement.click();
       }

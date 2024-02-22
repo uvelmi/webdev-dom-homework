@@ -143,7 +143,10 @@ body {
 	display: flex;
 	justify-content: flex-end;
  }
-
+.user-name{
+	color:#000;
+	background-color: #fff;
+}
  .add-form-button {
 	margin-top: 24px;
 	font-size: 24px;

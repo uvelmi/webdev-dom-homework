@@ -1,13 +1,8 @@
-import {comments, nameInputElement, commentInputElement } from "./main.js"
 import { renderApp, token } from "./render.js";
-
-
-// let token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
-// token = null;
 
 const host = "https://wedev-api.sky.pro/api/v2/elena-uvarova/comments";
 
-export function fetchAndRenderComments () { 
+export function fetchAndRenderComments (renderLoginComponent) { 
 
 	fetch(host, {
 		method: 'GET',
@@ -17,8 +12,6 @@ export function fetchAndRenderComments () {
 	})
 	.then((response) => {
 		 if(response.status === 401){
-			// token = prompt("Введите верный пароль");
-			// fetchAndRenderComments();
 			throw new Error("Нет авторизации");
 			
 		 }
@@ -34,19 +27,15 @@ export function fetchAndRenderComments () {
 		user: comment.user,
 		userLike: false,
 		isEdit: false,
-		// forceError: false,
+		id: comment.id,
 		}
-	});
+})
 	
-		let comments = appComments;
+	let comments = appComments;
 		return renderApp(comments);
+		
 		})
-	// })	
-		.catch((error) => {
-		 alert("Похоже, у вас проблемы с интернет-соединением. Пожалуйста, проверьте подключение к сети и попробуйте снова.");
-		 console.warn(error);
-	});
-}	
+}
 	
 export function addTodo(savedUserName, commentInputElement, buttonElement) {
 	
@@ -81,21 +70,14 @@ export function addTodo(savedUserName, commentInputElement, buttonElement) {
 			.then(() => {
 				buttonElement.disabled = false;
 				buttonElement.textContent = "Написать";
-				// nameInputElement.value = "";
 				commentInputElement.value = "";
-				// nameInputElement.disabled = false;
 				commentInputElement.disabled = false;
 				buttonElement.disabled = false;
-				// nameInputElement.focus();
 			}).catch((error) => {
 				buttonElement.disabled = false;
 				buttonElement.textContent = "Написать";
-				
-				// nameInputElement.disabled = false;
 				commentInputElement.disabled = false;
 				buttonElement.disabled = false;
-				// nameInputElement.focus();
-	
 				console.warn(error);
 	
 				if (error.message === "Ошибка сервера. Повторите позже"){
@@ -109,9 +91,6 @@ export function addTodo(savedUserName, commentInputElement, buttonElement) {
 	
 }
 
-
-
-// https://github.com/GlebkaF/webdev-hw-api/blob/main/pages/api/v2/%5Bkey%5D/comments/README.md
 export function loginUser({login, password}) {
 	 return	fetch("https://wedev-api.sky.pro/api/user/login", {
 		method: "POST",
@@ -124,9 +103,15 @@ export function loginUser({login, password}) {
 			throw new Error("Неверный логин или пароль");
 		}
 		return response.json();
-	 });
-}
+	 }).catch((error) => {
 
+		if (error.message === "Failed to fetch") {
+				alert("Кажется, у вас сломался интернет, попробуйте позже");		
+	}
+	return loginUser({login, password});
+	});
+	
+}
 
 export function registerUser({name, login, password}) {
 	 return	fetch("https://wedev-api.sky.pro/api/user", {

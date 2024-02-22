@@ -1,8 +1,9 @@
-import { comments, saveButtons, listElement, likes, handleEdit, handleSave, editButtonsComment, commentElementsQuoted } from "./main.js";
+import { saveButtons, likes, handleEdit, handleSave, editButtonsComment, commentElementsQuoted } from "./main.js";
 import { addTodo, fetchAndRenderComments } from "./api.js";
 import { renderLoginComponent } from "./components/login-components.js";
 
-
+export const buttonElement = document.getElementById("add-button");
+export const nameInputElement = document.getElementById("name-input");
 
 
 export let token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
@@ -20,7 +21,6 @@ const renderApp = (comments) => {
 	.map((comment, index) => {
 		 if (comment.isEdit) {  
 	return`
-  
 	  <li class="comment" data-index="${index}" >
 	<div class="comment-header">
 	  <div>${comment.name} </div>
@@ -37,10 +37,9 @@ const renderApp = (comments) => {
 			  `;
 	} else {
 				 return `
-			 
 			  <li class="comment" data-index="${index}">
 				 <div class="comment-header">
-					<div class="comment-name" >${comment.name}</div>
+					<div class="comment-name" data-index='${index}'>${comment.name}</div>
 					<div>${comment.date}</div>     
 			  </div>
 				 <div class="comment-body">
@@ -53,7 +52,6 @@ const renderApp = (comments) => {
 					  `<button class="edit-button add-form-button">Редактировать</button>`}
 					</div>        
 				 </div>
-			
 				 <div class="comment-footer">
 				 ${
 					!token
@@ -68,13 +66,11 @@ const renderApp = (comments) => {
 					</div>`}  
 				 </div>
 			  </li>
-			  
 			  `;
 		 }
 			})
 			.join("");
 
-			
 	const appHtml = `
 	<div class="container">
 	<div id="add-sign"></div>
@@ -88,11 +84,10 @@ const renderApp = (comments) => {
 		<p>Чтобы добавить комментарий <a id="login-link" 
 		class="form-registration-text" href="#" >авторизуйтесь</a></p>
 	  </div>` :
-	
 	`<div class="add-form">
 	  <input disabled
 		 type="text"
-		 class="add-form-name"
+		 class="add-form-name user-name"
 		 placeholder="${user}" 
 		 id="name-input"
 	  />
@@ -103,16 +98,13 @@ const renderApp = (comments) => {
 		 rows="4"
 		 id="comment-input"
 	  ></textarea>
-	
 	  <div class="add-form-row">
 		 <button type="submit" id="add-button" class="add-form-button post-button">Написать</button>
-		 <button id="delete-button" class="add-form-button">Удалить</button>
+		 <button id="delete-button" class="delete-button add-form-button">Удалить</button>
 	  </div>
 	</div>
 	`}
 	</div>
-	
-
  </div>`;
 			appEl.innerHTML = appHtml;
 			
@@ -134,7 +126,6 @@ const renderApp = (comments) => {
 						fetchAndRenderComments,
 					 });
 						return;
-				 
 			});
 		
 		 likes(comments);
@@ -143,17 +134,14 @@ const renderApp = (comments) => {
 		 editButtonsComment(comments);
 		 commentElementsQuoted(comments);
 		 saveButtons(comments);
-		 deleteButtonElementComment(comments);
-	
-		
-		 const commentInputElement = document.getElementById("comment-input");
-		 commentInputElement.addEventListener('input', function() {
-			commentInputElement.classList.remove("error");
-		 });
-		
+
 		 const buttonElement = document.getElementById("add-button");
-		 let nameInputElement = document.getElementById("name-input");
-		 buttonElement.addEventListener("click", () => {
+		 const nameInputElement = document.getElementById("name-input");
+		 buttonElement?.addEventListener("click", () => {
+			const commentInputElement = document.getElementById("comment-input");
+			commentInputElement.addEventListener('input', function() {
+			 commentInputElement.classList.remove("error");
+			});
 			let savedUserName = localStorage.getItem('user');
 		
 		
@@ -170,21 +158,18 @@ const renderApp = (comments) => {
 			 buttonElement.disabled = true;
 			 buttonElement.textContent = "Комментарий добавляется...";
 			 addTodo(savedUserName, commentInputElement, buttonElement);
-			//  renderApp(comments);
 		 });
-
 		 
-		 function deleteButtonElementComment(comments) {
-			const deleteButtonElement = document.getElementById("delete-button"); 
-		  deleteButtonElement.addEventListener("click", () => {
+		 const deleteButtons = document.querySelectorAll(".delete-button");
+  for (const deleteButton of deleteButtons) {
+    deleteButton.addEventListener("click", (event) => {
+      event.stopPropagation();
 			if (comments.length > 0) {
-		comments.pop(); // Удаляем последний комментарий из массива
+		comments.pop();
 		renderApp(comments);
 				}
 			});
 		};
-
-		
 };
 
 export { renderApp };
