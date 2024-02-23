@@ -8,7 +8,6 @@ import {
 } from './main.js'
 import { addTodo, fetchAndRenderComments } from './api.js'
 import { renderLoginComponent } from './components/login-components.js'
-import { format } from 'date-fns'
 export const buttonElement = document.getElementById('add-button')
 export const nameInputElement = document.getElementById('name-input')
 

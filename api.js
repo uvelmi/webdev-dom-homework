@@ -1,5 +1,5 @@
 import { renderApp, token } from './render.js'
-
+import { format } from 'date-fns'
 const host = 'https://wedev-api.sky.pro/api/v2/elena-uvarova/comments'
 
 export function fetchAndRenderComments() {
@@ -17,11 +17,13 @@ export function fetchAndRenderComments() {
         })
         .then((responseData) => {
             let appComments = responseData.comments.map((comment) => {
+							const formattedDate = format(new Date(comment.date), 'dd.MM.yyyy hh.mm.ss');
 
 							return {
 								
                     name: comment.author.name,
-                    date: new Date(comment.date).toLocaleTimeString('sm', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(", ", " "),
+                    // date: new Date(comment.date).toLocaleTimeString('sm', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(", ", " "),
+										date: formattedDate,
                     comment: comment.text,
                     like: comment.likes,
                     user: comment.user,
