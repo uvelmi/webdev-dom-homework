@@ -113,15 +113,14 @@ export function loginUser({ login, password }) {
             if (response.status === 400) {
                 throw new Error('Неверный логин или пароль')
             }
-            return response.json()
+            return response.json();
         })
 
         .catch((error) => {
             if (error.message === 'Failed to fetch') {
-                alert('Кажется, у вас сломался интернет, попробуйте позже')
-            }
-            return loginUser({ login, password })
-        })
+							throw new Error('Кажется, у вас сломался интернет, попробуйте позже');
+           }
+       })
 }
 
 export function registerUser({ name, login, password }) {
