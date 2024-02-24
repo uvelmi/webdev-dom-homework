@@ -17,12 +17,14 @@ export function fetchAndRenderComments() {
         })
         .then((responseData) => {
             let appComments = responseData.comments.map((comment) => {
-							const formattedDate = format(new Date(comment.date), 'dd.MM.yyyy hh:mm:ss');
+                const formattedDate = format(
+                    new Date(comment.date),
+                    'dd.MM.yyyy hh:mm:ss',
+                )
 
-							return {
-								
+                return {
                     name: comment.author.name,
-              			date: formattedDate,
+                    date: formattedDate,
                     comment: comment.text,
                     like: comment.likes,
                     user: comment.user,
@@ -113,14 +115,16 @@ export function loginUser({ login, password }) {
             if (response.status === 400) {
                 throw new Error('Неверный логин или пароль')
             }
-            return response.json();
+            return response.json()
         })
 
         .catch((error) => {
             if (error.message === 'Failed to fetch') {
-							throw new Error('Кажется, у вас сломался интернет, попробуйте позже');
-           }
-       })
+                throw new Error(
+                    'Кажется, у вас сломался интернет, попробуйте позже',
+                )
+            }
+        })
 }
 
 export function registerUser({ name, login, password }) {
