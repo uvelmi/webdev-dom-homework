@@ -175,37 +175,6 @@ export function saveButtons(comments) {
         })
     })
 }
-// import { compareAsc, format } from "date-fns";
-
-// format(new Date(), "dd.MM.yyyy hh:mm:ss");
-
-
-// const now = [
-// 	new Date(),
-// ]	
-// now.sort(compareAsc);
-// export function dateData() {
-//     let currentDate = new Date(formattedDate)
-
-//     let day =
-//         currentDate.getDate() < 10
-//             ? '0' + currentDate.getDate()
-//             : currentDate.getDate()
-//     let month =
-//         currentDate.getMonth() < 10
-//             ? '0' + currentDate.getMonth()
-//             : currentDate.getMonth()
-//     let year = currentDate.getFullYear().toString().slice(-2)
-//     let hours =
-//         currentDate.getHours() < 10
-//             ? '0' + currentDate.getHours()
-//             : currentDate.getHours()
-//     let minutes =
-//         currentDate.getMinutes() < 10
-//             ? '0' + currentDate.getMinutes()
-//             : currentDate.getMinutes()
-//     let formattedDate = `${day}.${month}.${year} ${hours}:${minutes}`
-// }
 document.addEventListener('keyup', (event) => {
     if (event.key === 'Enter') {
         buttonElement.click()
