@@ -22,7 +22,6 @@ export function setUser(newUser) {
 
 const renderApp = (comments) => {
 	const appEl = document.getElementById('app')
-
 	const commentsHtml = comments
 			.map((comment, index) => {
 					if (comment.isEdit) {
@@ -31,7 +30,6 @@ const renderApp = (comments) => {
 <div class="comment-header">
 	<div>${comment.name} </div>
 	<div>${comment.date}</div>
-	
 </div>
 <div class="comment-body">
 					<div class="comment-text" >
@@ -52,24 +50,24 @@ const renderApp = (comments) => {
 				<div class="comment-text" data-index="${index}">
 					<span data-index='${index}' class="comment-content">${comment.comment}</span>
 					${
-												!token
-														? ''
-														: `<button class="edit-button add-form-button">Редактировать</button>`
-										}
+							!token
+								? ''
+								: `<button class="edit-button add-form-button">Редактировать</button>`
+								}
 				</div>        
 			 </div>
 			 <div class="comment-footer">
 			 ${
-									 !token
-											 ? `<div class="likes">
+	!token
+	? `<div class="likes">
 					<span disabled class="likes-counter">${comment.like}</span>
 					<button disabled data-index='${index}' class="like-button ${comment.userLike ? '-active-like' : ''}"></button>
 				</div> `
-											 : `<div class="likes">
+: `<div class="likes">
 					<span class="likes-counter">${comment.like}</span>
 					<button data-index='${index}' class="like-button ${comment.userLike ? '-active-like' : ''}"></button>
 				</div>`
-							 }  
+}
 			 </div>
 			</li>
 			`
@@ -80,7 +78,6 @@ const renderApp = (comments) => {
 	const appHtml = `
 <div class="container">
 <div id="add-sign"></div>
-
 <ul class="comments" id="list">
 	<!-- Список рендерится из Js -->
 	${commentsHtml}
@@ -163,7 +160,6 @@ ${
 			}
 			nameInputElement.classList.remove('error')
 			commentInputElement.classList.remove('error')
-
 			buttonElement.disabled = true
 			buttonElement.textContent = 'Комментарий добавляется...'
 			addTodo(savedUserName, commentInputElement, buttonElement)

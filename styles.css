@@ -53,7 +53,6 @@ body {
 	flex-direction: column;
 	word-break: break-all;
 	gap: 24px;
-	/* white-space: pre-line;   */
 }
 
 .comment {
@@ -194,11 +193,8 @@ body {
 	border: none;
 	border-radius: 18px;
 }
-/* .quote{
-background-color: aliceblue;
-color:#202020;
-font-size: 20px;
-} */
+
+
 #add-sign {
 	margin: 0;
 	padding: 0;
