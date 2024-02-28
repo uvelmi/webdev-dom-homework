@@ -8,11 +8,10 @@
         "dev": "webpack --mode development --watch",
         "start": "http-server -p 3001",
         "format": "prettier --write .",
-        "lint:js": "eslint '**/*.js'",
+        "lint:js": "eslint ./**/*.js",
         "lint:css": "stylelint './src/**.css'",
         "prepare": "husky install",
-        "lint": "npm run lint:js && npm run lint:css",
-        "stylelint-check": "stylelint-config-prettier-check"
+        "lint": "npm run lint:js && npm run lint:css"
     },
     "repository": {
         "type": "git",
@@ -34,7 +33,6 @@
         "lint": "^0.8.19",
         "prettier": "^3.2.5",
         "stylelint": "^16.2.1",
-        "stylelint-config-standard": "^36.0.0",
         "webpack": "^5.90.3",
         "webpack-cli": "^5.1.4"
     }
