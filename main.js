@@ -1,6 +1,8 @@
 import { fetchAndRenderComments } from './api.js'
 import { renderApp } from './render.js'
 
+
+
 export const listElement = document.getElementById('list')
 export const commentElement = document.querySelector('.comments')
 export const nameInputElement = document.getElementById('name-input')
