@@ -118,9 +118,9 @@ export function handleSave(comments) {
             const listElement = document.getElementById('list')
             const editedComment = listElement
                 .querySelectorAll('.comment')
-                [
-                    handleSaveElement.dataset.index
-                ].querySelector('.comment-input').value
+                [handleSaveElement.dataset.index].querySelector(
+                    '.comment-input'
+                ).value
             if (isCommentEmpty(editedComment)) {
                 return
             }
@@ -156,7 +156,11 @@ export function commentElementsQuoted(comments, token) {
             if (!token) {
                 if (commentInputElement) {
                     if (!comments[indexQuoted].isEdit) {
-                        commentInputElement.value = `${comments[indexQuoted].comment.replaceAll('&nbsp;', ' ')}\n\n @ ${comments[indexQuoted].name.replaceAll('&nbsp;', ' ')},`
+                        commentInputElement.value = `${comments[
+                            indexQuoted
+                        ].comment.replaceAll('&nbsp;', ' ')}\n\n @ ${comments[
+                            indexQuoted
+                        ].name.replaceAll('&nbsp;', ' ')},`
                     }
                 }
             }
@@ -172,7 +176,7 @@ export function saveButtons(comments) {
             event.stopPropagation()
             const editedComment =
                 button.parentNode.nextElementSibling.querySelector(
-                    '.comment-input',
+                    '.comment-input'
                 ).value
             comments[index].comment = editedComment
             comments[index].isEdit = false
