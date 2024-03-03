@@ -53,13 +53,14 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
-/***/ "./webpack.config.js":
+// /***/ "./webpack.config.js":
 /*!***************************!*\
   !*** ./webpack.config.js ***!
   \***************************/
+	'./webpack.config.js':
 /***/ ((module) => {
 
-eval("module.exports = {\r\n\tentry: \"./main.js\",\r\n\toutput: {\r\n\t\t\tfilename: \"main.js\"\r\n\t}\r\n}\r\n\n\n//# sourceURL=webpack://y/./webpack.config.js?");
+eval("module.exports = {\r\n\tentry: './main.js',\r\n\toutput: {\r\n\t\t\tfilename: 'main.js'\r\n\t}\r\n}\n\n//# sourceURL=webpack://y/./webpack.config.js?");
 
 /***/ }),
 
