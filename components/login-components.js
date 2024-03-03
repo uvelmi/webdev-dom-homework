@@ -9,7 +9,11 @@ export function renderLoginComponent({ setToken, fetchAndRenderComments }) {
 
 	<div class="add-form">
 		<h3 class="add-form-title">Форма ${isLoginMode ? 'входа' : 'регистрации'}</h3>
-		${isLoginMode ? '' : `<input type="text" class="add-form-name add-name add-name" placeholder="Введите имя" id="name-input"/>`}
+		${
+            isLoginMode
+                ? ''
+                : `<input type="text" class="add-form-name add-name add-name" placeholder="Введите имя" id="name-input"/>`
+        }
 		<input
 		  type="text"
 		  class="add-form-name add-name"
@@ -25,11 +29,15 @@ export function renderLoginComponent({ setToken, fetchAndRenderComments }) {
 		/>
 	 
 		<div class="add-form-row">
-		 <button type="submit" id="login-button" class="add-form-button post-button">${isLoginMode ? 'Войти' : 'Зарегистрироваться'}</button>
+		 <button type="submit" id="login-button" class="add-form-button post-button">${
+             isLoginMode ? 'Войти' : 'Зарегистрироваться'
+         }</button>
 		  
 		</div>
 		<div class="add-form-row">
-		 <button type="submit" id="toggle-button" class="add-form-button post-button">${isLoginMode ? 'Зарегистрироваться ' : 'Войти'}</button>
+		 <button type="submit" id="toggle-button" class="add-form-button post-button">${
+             isLoginMode ? 'Зарегистрироваться ' : 'Войти'
+         }</button>
 		</div>
 </div>`
 

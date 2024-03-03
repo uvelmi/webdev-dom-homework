@@ -1,7 +1,10 @@
 import { fetchAndRenderComments } from './api.js'
 import { renderApp } from './render.js'
 
-
+import './api.js'
+import './render.js'
+import './webpack.config.js'
+import './components/login-components.js'
 
 export const listElement = document.getElementById('list')
 export const commentElement = document.querySelector('.comments')
