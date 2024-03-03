@@ -82,7 +82,7 @@ export function likes(comments) {
 }
 likes(comments)
 
-export function handleEdit(comments) {
+export function handleEdit(comments, index) {
     const handleEditElements = document.querySelectorAll('.editing')
     for (const handleEditElement of handleEditElements) {
         handleEditElement.addEventListener('click', (event) => {
@@ -90,8 +90,7 @@ export function handleEdit(comments) {
             comments[index].isEdit = true
             renderApp(comments)
             listElement
-                .querySelectorAll('.comment')
-                [index].querySelector('.save-button').style.display = 'block'
+                .querySelectorAll('.comment')[index].querySelector('.save-button').style.display = 'block'
             renderApp(comments)
         })
     }
@@ -114,11 +113,10 @@ export function handleSave(comments) {
         handleSaveElement.addEventListener('click', (event) => {
             event.stopPropagation()
             const index = handleSaveElement.dataset.index
-            const comment = comments[index]
+            // const comment = comments[index]
             const listElement = document.getElementById('list')
             const editedComment = listElement
-                .querySelectorAll('.comment')
-                [handleSaveElement.dataset.index].querySelector(
+                .querySelectorAll('.comment')[handleSaveElement.dataset.index].querySelector(
                     '.comment-input'
                 ).value
             if (isCommentEmpty(editedComment)) {
@@ -128,8 +126,7 @@ export function handleSave(comments) {
             comments[index].isEdit = false
 
             listElement
-                .querySelectorAll('.comment')
-                [index].querySelector('.save-buttons').style.display = 'none'
+                .querySelectorAll('.comment')[index].querySelector('.save-buttons').style.display = 'none'
             renderApp(comments)
         })
     }
@@ -184,7 +181,7 @@ export function saveButtons(comments) {
         })
     })
 }
-document.addEventListener('keyup', (event) => {
+document.addEventListener('keyup', (event, buttonElement) => {
     if (event.key === 'Enter') {
         buttonElement.click()
     }
