@@ -3,7 +3,7 @@ module.exports = {
         browser: true,
         es2021: true,
     },
-    "extends": ["eslint:recommended", "prettier"],
+    extends: ['eslint:recommended', 'prettier'],
     overrides: [
         {
             env: {
@@ -15,14 +15,14 @@ module.exports = {
             },
         },
     ],
+    plugins: ['prettier'],
     parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
     },
-    "plugins": ["prettier"],
-		"rules": {
-			"prettier/prettier": "error",
-			"camelcase": ["error"],
-			"eqeqeq": ["error", "always"]
-	}
+    rules: {
+        'prettier/prettier': 'error',
+        camelcase: ['error'],
+        eqeqeq: ['error', 'always'],
+    },
 }
