@@ -19,7 +19,7 @@ export function fetchAndRenderComments() {
             let appComments = responseData.comments.map((comment) => {
                 const formattedDate = format(
                     new Date(comment.date),
-                    'dd.MM.yyyy hh:mm:ss'
+                    'dd.MM.yyyy hh:mm:ss',
                 )
 
                 return {
@@ -64,8 +64,8 @@ export function addTodo(savedUserName, commentInputElement, buttonElement) {
             if (response.status === 400) {
                 throw new Error(
                     alert(
-                        'Имя и комментарий должны быть не короче 3-х символов'
-                    )
+                        'Имя и комментарий должны быть не короче 3-х символов',
+                    ),
                 )
             }
 
@@ -96,7 +96,7 @@ export function addTodo(savedUserName, commentInputElement, buttonElement) {
                 addTodo()
             } else {
                 alert(
-                    'Пожалуйста, проверьте подключение к сети и попробуйте снова.'
+                    'Пожалуйста, проверьте подключение к сети и попробуйте снова.',
                 )
             }
             postMessage(error)
@@ -121,7 +121,7 @@ export function loginUser({ login, password }) {
         .catch((error) => {
             if (error.message === 'Failed to fetch') {
                 throw new Error(
-                    'Кажется, у вас сломался интернет, попробуйте позже'
+                    'Кажется, у вас сломался интернет, попробуйте позже',
                 )
             }
         })

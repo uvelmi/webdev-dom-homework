@@ -64,14 +64,14 @@ const renderApp = (comments) => {
                          ? `<div class="likes">
 					  <span disabled class="likes-counter">${comment.like}</span>
 					  <button disabled data-index='${index}' class="like-button ${
-                               comment.userLike ? '-active-like' : ''
-                           }"></button>
+                          comment.userLike ? '-active-like' : ''
+                      }"></button>
 					</div> `
                          : `<div class="likes">
 					  <span class="likes-counter">${comment.like}</span>
 					  <button data-index='${index}' class="like-button ${
-                               comment.userLike ? '-active-like' : ''
-                           }"></button>
+                          comment.userLike ? '-active-like' : ''
+                      }"></button>
 					</div>`
                  }  
 				 </div>

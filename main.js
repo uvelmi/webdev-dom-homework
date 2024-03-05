@@ -90,7 +90,8 @@ export function handleEdit(comments, index) {
             comments[index].isEdit = true
             renderApp(comments)
             listElement
-                .querySelectorAll('.comment')[index].querySelector('.save-button').style.display = 'block'
+                .querySelectorAll('.comment')
+                [index].querySelector('.save-button').style.display = 'block'
             renderApp(comments)
         })
     }
@@ -116,9 +117,10 @@ export function handleSave(comments) {
             // const comment = comments[index]
             const listElement = document.getElementById('list')
             const editedComment = listElement
-                .querySelectorAll('.comment')[handleSaveElement.dataset.index].querySelector(
-                    '.comment-input'
-                ).value
+                .querySelectorAll('.comment')
+                [
+                    handleSaveElement.dataset.index
+                ].querySelector('.comment-input').value
             if (isCommentEmpty(editedComment)) {
                 return
             }
@@ -126,7 +128,8 @@ export function handleSave(comments) {
             comments[index].isEdit = false
 
             listElement
-                .querySelectorAll('.comment')[index].querySelector('.save-buttons').style.display = 'none'
+                .querySelectorAll('.comment')
+                [index].querySelector('.save-buttons').style.display = 'none'
             renderApp(comments)
         })
     }
@@ -173,7 +176,7 @@ export function saveButtons(comments) {
             event.stopPropagation()
             const editedComment =
                 button.parentNode.nextElementSibling.querySelector(
-                    '.comment-input'
+                    '.comment-input',
                 ).value
             comments[index].comment = editedComment
             comments[index].isEdit = false
