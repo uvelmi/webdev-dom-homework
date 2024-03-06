@@ -77,7 +77,7 @@ export function likes(comments) {
 }
 likes(comments)
 
-export function handleEdit(comments) {
+export function handleEdit(comments, index) {
     const handleEditElements = document.querySelectorAll('.editing')
     for (const handleEditElement of handleEditElements) {
         handleEditElement.addEventListener('click', (event) => {
@@ -109,7 +109,7 @@ export function handleSave(comments) {
         handleSaveElement.addEventListener('click', (event) => {
             event.stopPropagation()
             const index = handleSaveElement.dataset.index
-            const comment = comments[index]
+            // const comment = comments[index]
             const listElement = document.getElementById('list')
             const editedComment = listElement
                 .querySelectorAll('.comment')
@@ -159,7 +159,7 @@ export function commentElementsQuoted(comments, token) {
         })
     }
 }
-
+const buttonElement = document.getElementById('add-button')
 export function saveButtons(comments) {
     const saveButtons = document.querySelectorAll('.save-button')
     saveButtons.forEach((button, index) => {
