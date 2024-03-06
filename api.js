@@ -74,7 +74,7 @@ export function addTodo(savedUserName, commentInputElement, buttonElement) {
             }
         })
 
-        .then((response) => {
+        .then(() => {
             return fetchAndRenderComments()
         })
         .then(() => {
@@ -93,7 +93,7 @@ export function addTodo(savedUserName, commentInputElement, buttonElement) {
 
             if (error.message === 'Ошибка сервера. Повторите позже') {
                 alert('Ошибка сервера.')
-                addTodo(text)
+                addTodo()
             } else {
                 alert(
                     'Пожалуйста, проверьте подключение к сети и попробуйте снова.',
